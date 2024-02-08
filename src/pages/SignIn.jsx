@@ -16,7 +16,7 @@ function SignIn() {
       return;
     }
     // Handle signup logic
-    const response = await fetch("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCjPHPbwO6y6-tia4sWzTa4IoVfCK544O8",
+    const response = await fetch("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDzbk4Tp7lKMkvJ9nYShiv4R1wzn8KQU0A",
     {
         method: "POST",
         body: JSON.stringify({
@@ -71,3 +71,6 @@ function SignIn() {
 }
 
 export default SignIn;
+
+
+//akum5991@gmail.com
