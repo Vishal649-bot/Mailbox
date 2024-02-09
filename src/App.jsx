@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import Compose from './pages/Compose';
 import Inbox from './pages/Inbox';
 import Content from './pages/Content';
+import Sent from './pages/Sent';
 
 function App() {
  
@@ -22,6 +23,8 @@ function App() {
           <Route path='/login' element={<Login/>} />
           <Route path='/Home' element={<Home/>} />
           <Route path='/Compose' element={<Compose/>} />
+          <Route path='/Sent' element={<Sent/>} />
+          <Route path='/Sent/:content' element={<Content/>} />
           <Route path='/Inbox' element={<Inbox/>} />
           <Route path='/Inbox/:content' element={<Content/>} />
          

@@ -14,7 +14,7 @@ function NavBar() {
           <Nav className="me-auto">
             <Nav.Link href="/Compose">Compose</Nav.Link>
             <Nav.Link href="/Inbox">Inbox</Nav.Link>
-            <Nav.Link href="#pricing">Pricing</Nav.Link>
+            <Nav.Link href="/Sent">Sent</Nav.Link>
             <button onClick={logOut}>logout</button>
           </Nav>
         </Container>
