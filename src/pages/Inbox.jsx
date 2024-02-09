@@ -43,6 +43,16 @@ const Inbox = () => {
         }
     };
 
+    const deleteEmail = async (id) => {
+        try {
+            await axios.delete(`https://mail-box-8b3cd-default-rtdb.firebaseio.com/emails/${id}.json`);
+            const updatedEmails = emails.filter(email => email.id !== id);
+            setEmails(updatedEmails);
+        } catch (error) {
+            console.error('Error deleting email:', error);
+        }
+    };
+
     return (
         <div>
             <NavBar />
@@ -50,14 +60,15 @@ const Inbox = () => {
                 <div className="unread-count">{unreadCount} Unread</div>
                 {emails.map(email => (
                     email.to === loggedInEmail && (
-                        <Link to={`/Inbox/${email.id}`} key={email.id}>
-                            <div className={`email-item ${email.read ? 'read' : 'unread'}`} onClick={() => markAsRead(email.id)}>
+                        <div key={email.id} className={`email-item ${email.read ? 'read' : 'unread'}`}>
+                            <Link to={`/Inbox/${email.id}`}>
                                 <p className='email-sender'>From: {email.email}</p>
                                 <h3 className='email-subject'>Subject: {email.subject}</h3>
                                 <hr className='email-divider' />
                                 {!email.read && <div className="blue-dot"></div>}
-                            </div>
-                        </Link>
+                            </Link>
+                            <button onClick={() => deleteEmail(email.id)}>Delete</button>
+                        </div>
                     )
                 ))}
             </div>
