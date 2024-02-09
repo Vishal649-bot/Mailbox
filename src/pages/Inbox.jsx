@@ -1,19 +1,21 @@
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
-import HTMLComponent from '../components/HTMLCOMPONENT';
-import NavBar from '../components/Navbar';
-import '../style/inbox.css'
 import { Link } from 'react-router-dom';
+import NavBar from '../components/Navbar';
+import '../style/inbox.css';
+
 const Inbox = () => {
-    const [data, setData] = useState([]);
-    const loggedInEmail = localStorage.getItem('email'); // Assuming you stored the logged-in user's email in localStorage
+    const [emails, setEmails] = useState([]);
+    const [unreadCount, setUnreadCount] = useState(0);
+    const loggedInEmail = localStorage.getItem('email');
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get("https://mail-box-8b3cd-default-rtdb.firebaseio.com/emails.json/");
-                // console.log(response.data);
-                setData(response.data);
+                const response = await axios.get("https://mail-box-8b3cd-default-rtdb.firebaseio.com/emails.json");
+                const data = response.data || {};
+                const emailList = Object.entries(data).map(([id, email]) => ({ id, ...email }));
+                setEmails(emailList);
             } catch (error) {
                 console.error('Error fetching emails:', error);
             }
@@ -21,34 +23,46 @@ const Inbox = () => {
         fetchData();
     }, []);
 
+    useEffect(() => {
+        const unread = emails.filter(email => !email.read && email.to === loggedInEmail).length;
+        setUnreadCount(unread);
+    }, [emails, loggedInEmail]);
+
+    const markAsRead = async (id) => {
+        try {
+            await axios.patch(`https://mail-box-8b3cd-default-rtdb.firebaseio.com/emails/${id}.json`, { read: true });
+            const updatedEmails = emails.map(email => {
+                if (email.id === id) {
+                    return { ...email, read: true };
+                }
+                return email;
+            });
+            setEmails(updatedEmails);
+        } catch (error) {
+            console.error('Error marking email as read:', error);
+        }
+    };
+
     return (
         <div>
-        <NavBar/>
-        <div className='inbox-container'>
-        
-            {Object.keys(data).map((props,idx) => {
-                const emailData = data[props];
-                console.log('====================================');
-                console.log(props);
-                console.log('====================================');
-                // Add filter based on the 'to' field
-                if (emailData.to === loggedInEmail) {
-                    return (
-                        <Link to={props} key={idx}>
-                        <div className='email-item' key={props}> 
-                            <p className='email-sender'>From: {emailData.email}</p> 
-                            <h3 className='email-subject'>Subject-{emailData.subject}</h3> 
-                            <hr className='email-divider' /> 
-                        </div>
+            <NavBar />
+            <div className='inbox-container'>
+                <div className="unread-count">{unreadCount} Unread</div>
+                {emails.map(email => (
+                    email.to === loggedInEmail && (
+                        <Link to={`/Inbox/${email.id}`} key={email.id}>
+                            <div className={`email-item ${email.read ? 'read' : 'unread'}`} onClick={() => markAsRead(email.id)}>
+                                <p className='email-sender'>From: {email.email}</p>
+                                <h3 className='email-subject'>Subject: {email.subject}</h3>
+                                <hr className='email-divider' />
+                                {!email.read && <div className="blue-dot"></div>}
+                            </div>
                         </Link>
-                    );
-                } else {
-                    return null; 
-                }
-            })}
+                    )
+                ))}
+            </div>
         </div>
-        </div>
-    );      
+    );
 };
 
 export default Inbox;

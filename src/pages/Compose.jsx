@@ -1,82 +1,77 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import JoditEditor from 'jodit-react';
-import { useRef } from 'react';
 import axios from 'axios';
 import NavBar from '../components/Navbar';
 
 const Compose = () => {
-  const [to, setTo] = useState('');
-  const [subject, setSubject] = useState('');
-  const editor = useRef(null);
-  const [content, setContent] = useState('');
-  
-  const mail = localStorage.getItem('email')
-  const handleToChange = (event) => {
-    setTo(event.target.value);
-  };
+    const [to, setTo] = useState('');
+    const [subject, setSubject] = useState('');
+    const [content, setContent] = useState('');
+    const loggedInEmail = localStorage.getItem('email');
 
-  const handleSubjectChange = (event) => {
-    setSubject(event.target.value);
-  };
+    const handleToChange = (event) => {
+        setTo(event.target.value);
+    };
 
-  const handleContentChange = (value) => {
-    setContent(value);
-  };
+    const handleSubjectChange = (event) => {
+        setSubject(event.target.value);
+    };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    let obj =  {
-        to: to,
-        subject: subject,
-        content: content,
-        email: mail
-      }
-    try {
-      // Make HTTP POST request to Firebase Realtime Database
-      await axios.post('https://mail-box-8b3cd-default-rtdb.firebaseio.com/emails.json',obj);
+    const handleContentChange = (value) => {
+        setContent(value);
+    };
 
-      console.log('Email sent successfully.');
-    } catch (error) {
-      console.error('Error sending email:', error);
-    }
-  };
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        const emailData = {
+            to: to,
+            subject: subject,
+            content: content,
+            email: loggedInEmail
+        };
+        try {
+            await axios.post('https://mail-box-8b3cd-default-rtdb.firebaseio.com/emails.json', emailData);
+            console.log('Email sent successfully.');
+        } catch (error) {
+            console.error('Error sending email:', error);
+        }
+    };
 
-  return (
-    <div>
-      <NavBar/>
-      <form onSubmit={handleSubmit}>
+    return (
         <div>
-          <label htmlFor="to">To:</label>
-          <input
-            type="text"
-            id="to"
-            value={to}
-            onChange={handleToChange}
-            required
-          />
+            <NavBar />
+            <form onSubmit={handleSubmit}>
+                <div>
+                    <label htmlFor="to">To:</label>
+                    <input
+                        type="text"
+                        id="to"
+                        value={to}
+                        onChange={handleToChange}
+                        required
+                    />
+                </div>
+                <div>
+                    <label htmlFor="subject">Subject:</label>
+                    <input
+                        type="text"
+                        id="subject"
+                        value={subject}
+                        onChange={handleSubjectChange}
+                        required
+                    />
+                </div>
+                <div>
+                    <label>Content:</label>
+                    <JoditEditor
+                        value={content}
+                        onChange={handleContentChange}
+                    />
+                </div>
+                <button type="submit">Send</button>
+            </form>
         </div>
-        <div>
-          <label htmlFor="subject">Subject:</label>
-          <input
-            type="text"
-            id="subject"
-            value={subject}
-            onChange={handleSubjectChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Content:</label>
-          <JoditEditor
-            ref={editor}
-            value={content}
-            onChange={handleContentChange}
-          />
-        </div>
-        <button type="submit">Send</button>
-      </form>
-    </div>
-  );
+    );
 };
 
 export default Compose;

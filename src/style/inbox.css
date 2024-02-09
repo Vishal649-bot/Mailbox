@@ -30,4 +30,21 @@
     margin-top: 10px;
     margin-bottom: 10px;
   }
-  
+  .blue-dot {
+    width: 8px;
+    height: 8px;
+    background-color: blue;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+/* Style for unread emails */
+.email-item.unread .blue-dot {
+    display: inline-block;
+}
+
+/* Style for read emails */
+.email-item.read .blue-dot {
+    display: none;
+}
