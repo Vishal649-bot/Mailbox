@@ -9,7 +9,8 @@ const Compose = () => {
   const [subject, setSubject] = useState('');
   const editor = useRef(null);
   const [content, setContent] = useState('');
-
+  
+  const mail = localStorage.getItem('email')
   const handleToChange = (event) => {
     setTo(event.target.value);
   };
@@ -27,7 +28,8 @@ const Compose = () => {
     let obj =  {
         to: to,
         subject: subject,
-        content: content
+        content: content,
+        email: mail
       }
     try {
       // Make HTTP POST request to Firebase Realtime Database

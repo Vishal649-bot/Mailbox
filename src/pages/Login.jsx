@@ -29,6 +29,7 @@ function Login() {
     const data = await response.json()
     console.log(data);
     localStorage.setItem('token', data.idToken )
+    localStorage.setItem('email', data.email)
     
     const emailvarifi = await  fetch("https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyDzbk4Tp7lKMkvJ9nYShiv4R1wzn8KQU0A", {
         method: "POST",

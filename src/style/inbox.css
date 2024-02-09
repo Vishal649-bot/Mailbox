@@ -1,0 +1,33 @@
+/* inbox.css */
+
+/* Style for the container */
+.inbox-container {
+    padding: 20px;
+  }
+  
+  /* Style for the email item */
+  .email-item {
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  /* Style for the email sender */
+  .email-sender {
+    font-weight: bold;
+  }
+  
+  /* Style for the email subject */
+  .email-subject {
+    color: #333;
+  }
+  
+  /* Style for the HR element */
+  .email-divider {
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  

@@ -6,6 +6,8 @@ import Signup from './pages/SignIn';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Compose from './pages/Compose';
+import Inbox from './pages/Inbox';
+import Content from './pages/Content';
 
 function App() {
  
@@ -20,6 +22,8 @@ function App() {
           <Route path='/login' element={<Login/>} />
           <Route path='/Home' element={<Home/>} />
           <Route path='/Compose' element={<Compose/>} />
+          <Route path='/Inbox' element={<Inbox/>} />
+          <Route path='/Inbox/:content' element={<Content/>} />
          
         </Routes>
       </div>
